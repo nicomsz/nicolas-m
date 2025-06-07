@@ -26,6 +26,7 @@ import {
 
 export default function ModernPortfolio() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [scrollY, setScrollY] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -40,12 +41,20 @@ export default function ModernPortfolio() {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
 
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+
     window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("scroll", handleScroll)
 
     // Enable smooth scrolling
     document.documentElement.style.scrollBehavior = "smooth"
 
-    return () => window.removeEventListener("mousemove", handleMouseMove)
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
 
   const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
@@ -108,29 +117,38 @@ export default function ModernPortfolio() {
 
   return (
     <div className="min-h-screen bg-white text-black font-sans">
-      {/* Gradient Blobs/Manchas */}
+      {/* Gradient Blobs/Manchas com animação de scroll - CORES DE DESTAQUE */}
       <div className="fixed inset-0 z-0 overflow-hidden">
-        {/* Mancha azul-roxa no topo direito */}
+        {/* Mancha principal - azul suave */}
         <div
-          className="absolute top-20 right-10 w-96 h-96 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 rounded-full blur-3xl opacity-20 animate-pulse"
-          style={{ animationDuration: "4s" }}
+          className="absolute w-96 h-96 bg-gradient-to-br from-blue-200 to-blue-100 rounded-full blur-3xl opacity-60 transition-all duration-1000 ease-out"
+          style={{
+            top: `${20 + scrollY * 0.1}px`,
+            right: `${10 + scrollY * 0.05}px`,
+          }}
         />
 
-        {/* Mancha laranja-rosa no meio esquerdo */}
+        {/* Mancha secundária - roxo suave */}
         <div
-          className="absolute top-1/2 left-10 w-80 h-80 bg-gradient-to-br from-orange-400 via-pink-500 to-red-500 rounded-full blur-3xl opacity-15 animate-pulse"
-          style={{ animationDuration: "6s", animationDelay: "2s" }}
+          className="absolute w-80 h-80 bg-gradient-to-br from-purple-200 to-purple-100 rounded-full blur-3xl opacity-50 transition-all duration-1000 ease-out"
+          style={{
+            top: `${window.innerHeight / 2 - scrollY * 0.15}px`,
+            left: `${10 - scrollY * 0.03}px`,
+          }}
         />
 
-        {/* Mancha verde-azul no bottom */}
+        {/* Mancha terciária - verde suave */}
         <div
-          className="absolute bottom-32 right-1/3 w-72 h-72 bg-gradient-to-br from-teal-400 via-blue-500 to-purple-600 rounded-full blur-3xl opacity-10 animate-pulse"
-          style={{ animationDuration: "5s", animationDelay: "1s" }}
+          className="absolute w-72 h-72 bg-gradient-to-br from-emerald-200 to-emerald-100 rounded-full blur-3xl opacity-70 transition-all duration-1000 ease-out"
+          style={{
+            bottom: `${32 + scrollY * 0.08}px`,
+            right: `${window.innerWidth / 3 + scrollY * 0.02}px`,
+          }}
         />
 
         {/* Mouse follower sutil */}
         <div
-          className="absolute w-64 h-64 bg-gray-50 rounded-full blur-3xl opacity-60 transition-all duration-1000 ease-out"
+          className="absolute w-64 h-64 bg-slate-100 rounded-full blur-3xl opacity-40 transition-all duration-1000 ease-out"
           style={{
             left: mousePosition.x - 128,
             top: mousePosition.y - 128,
@@ -138,8 +156,8 @@ export default function ModernPortfolio() {
         />
 
         {/* Elementos geométricos sutis */}
-        <div className="absolute top-20 right-20 w-px h-32 bg-gray-100" />
-        <div className="absolute bottom-40 left-20 w-32 h-px bg-gray-100" />
+        <div className="absolute top-20 right-20 w-px h-32 bg-gray-200" />
+        <div className="absolute bottom-40 left-20 w-32 h-px bg-gray-200" />
       </div>
 
       {/* 3D Cube Animation */}
@@ -267,7 +285,7 @@ export default function ModernPortfolio() {
                     <span className="block text-5xl md:text-8xl font-bold tracking-tight leading-none text-black">
                       NICOLAS
                     </span>
-                    <span className="block text-4xl md:text-7xl font-black tracking-tighter mt-2 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                    <span className="block text-4xl md:text-7xl font-black tracking-tighter mt-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                       MORAES
                     </span>
                   </h1>
@@ -363,7 +381,7 @@ export default function ModernPortfolio() {
                     },
                   ].map((item, index) => (
                     <div key={index} className="flex items-start gap-4 group">
-                      <div className="p-3 rounded-full bg-white border border-gray-200 transition-all duration-300 group-hover:scale-110 group-hover:border-gray-400">
+                      <div className="p-3 rounded-full bg-white border border-gray-200 transition-all duration-300 group-hover:scale-110 group-hover:border-blue-300">
                         <item.icon className="w-5 h-5 text-gray-700" />
                       </div>
                       <div>
@@ -394,15 +412,15 @@ export default function ModernPortfolio() {
 
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-200" />
+              <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-blue-200 to-purple-200" />
 
               <div className="space-y-12">
                 {experiences.map((exp, index) => (
                   <div key={index} className="relative flex gap-8 group">
                     {/* Timeline Dot */}
                     <div className="relative z-10 flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center group-hover:border-gray-400 transition-colors">
-                        <Building className="w-6 h-6 text-gray-600" />
+                      <div className="w-16 h-16 rounded-full bg-white border-2 border-blue-200 flex items-center justify-center group-hover:border-blue-300 transition-colors">
+                        <Building className="w-6 h-6 text-blue-600" />
                       </div>
                       <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-500 whitespace-nowrap">
                         {exp.year}
@@ -411,7 +429,7 @@ export default function ModernPortfolio() {
 
                     {/* Content */}
                     <div className="flex-1 pb-12">
-                      <Card className="border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg">
+                      <Card className="border-gray-200 hover:border-blue-200 transition-all duration-300 hover:shadow-lg">
                         <CardContent className="p-8">
                           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                             <div>
@@ -432,7 +450,7 @@ export default function ModernPortfolio() {
                             <div className="grid sm:grid-cols-2 gap-2">
                               {exp.highlights.map((highlight, idx) => (
                                 <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                                  <ArrowRight className="w-3 h-3 text-gray-400" />
+                                  <ArrowRight className="w-3 h-3 text-blue-400" />
                                   {highlight}
                                 </div>
                               ))}
@@ -512,12 +530,12 @@ export default function ModernPortfolio() {
                           {["S3", "CloudFront", "Lambda", "API Gateway", "EC2", "RDS"].map((service, index) => (
                             <div
                               key={service}
-                              className="group relative p-4 rounded-lg bg-gray-50 border border-gray-100 text-center hover:bg-gray-100 transition-all duration-300 cursor-pointer"
+                              className="group relative p-4 rounded-lg bg-gray-50 border border-gray-100 text-center hover:bg-blue-50 hover:border-blue-200 transition-all duration-300 cursor-pointer"
                               style={{
                                 animationDelay: `${index * 100}ms`,
                               }}
                             >
-                              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg" />
                               <span className="relative font-medium text-gray-700 text-sm">{service}</span>
                             </div>
                           ))}
@@ -545,47 +563,47 @@ export default function ModernPortfolio() {
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 mb-16">
-              <Card className="border-gray-200 bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              <Card className="border-gray-200 bg-white hover:border-blue-200 hover:shadow-lg transition-all duration-300 group">
                 <CardContent className="p-8 text-center">
-                  <div className="p-4 rounded-full bg-gray-50 border border-gray-100 w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Mail className="w-6 h-6 text-gray-700" />
+                  <div className="p-4 rounded-full bg-gray-50 border border-gray-100 w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all">
+                    <Mail className="w-6 h-6 text-gray-700 group-hover:text-blue-600" />
                   </div>
                   <h3 className="font-medium text-black mb-3">Email</h3>
                   <a
                     href="mailto:nicolasmdesouza@gmail.com"
-                    className="text-gray-600 hover:text-black transition-colors font-light text-sm"
+                    className="text-gray-600 hover:text-blue-600 transition-colors font-light text-sm"
                   >
                     nicolasmdesouza@gmail.com
                   </a>
                 </CardContent>
               </Card>
 
-              <Card className="border-gray-200 bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              <Card className="border-gray-200 bg-white hover:border-purple-200 hover:shadow-lg transition-all duration-300 group">
                 <CardContent className="p-8 text-center">
-                  <div className="p-4 rounded-full bg-gray-50 border border-gray-100 w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-gray-700" />
+                  <div className="p-4 rounded-full bg-gray-50 border border-gray-100 w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 group-hover:bg-purple-50 group-hover:border-purple-200 transition-all">
+                    <Phone className="w-6 h-6 text-gray-700 group-hover:text-purple-600" />
                   </div>
                   <h3 className="font-medium text-black mb-3">Phone</h3>
                   <a
                     href="tel:+5547992879838"
-                    className="text-gray-600 hover:text-black transition-colors font-light text-sm"
+                    className="text-gray-600 hover:text-purple-600 transition-colors font-light text-sm"
                   >
                     +55 47 99287-9838
                   </a>
                 </CardContent>
               </Card>
 
-              <Card className="border-gray-200 bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-300 group">
+              <Card className="border-gray-200 bg-white hover:border-emerald-200 hover:shadow-lg transition-all duration-300 group">
                 <CardContent className="p-8 text-center">
-                  <div className="p-4 rounded-full bg-gray-50 border border-gray-100 w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Linkedin className="w-6 h-6 text-gray-700" />
+                  <div className="p-4 rounded-full bg-gray-50 border border-gray-100 w-16 h-16 mx-auto mb-6 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-50 group-hover:border-emerald-200 transition-all">
+                    <Linkedin className="w-6 h-6 text-gray-700 group-hover:text-emerald-600" />
                   </div>
                   <h3 className="font-medium text-black mb-3">LinkedIn</h3>
                   <a
                     href="https://www.linkedin.com/in/nicolas-moraes-de-souza-362522233/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-black transition-colors font-light text-sm"
+                    className="text-gray-600 hover:text-emerald-600 transition-colors font-light text-sm"
                   >
                     Connect
                   </a>
@@ -618,7 +636,7 @@ export default function ModernPortfolio() {
                   Fullstack Developer specializing in modern web technologies and immersive 3D experiences.
                 </p>
                 <div className="flex items-center gap-2">
-                  <Circle className="w-2 h-2 fill-gray-700" />
+                  <Circle className="w-2 h-2 fill-emerald-500" />
                   <span className="text-sm text-gray-700 font-medium">Available for new projects</span>
                 </div>
               </div>
