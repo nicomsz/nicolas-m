@@ -27,6 +27,7 @@ import {
 export default function ModernPortfolio() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [scrollY, setScrollY] = useState(0)
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const heroRef = useRef<HTMLDivElement>(null)
@@ -37,6 +38,17 @@ export default function ModernPortfolio() {
   useEffect(() => {
     setIsLoaded(true)
 
+    // Set initial window size
+    const updateWindowSize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
+
+    // Set initial size
+    updateWindowSize()
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
@@ -45,8 +57,13 @@ export default function ModernPortfolio() {
       setScrollY(window.scrollY)
     }
 
+    const handleResize = () => {
+      updateWindowSize()
+    }
+
     window.addEventListener("mousemove", handleMouseMove)
     window.addEventListener("scroll", handleScroll)
+    window.addEventListener("resize", handleResize)
 
     // Enable smooth scrolling
     document.documentElement.style.scrollBehavior = "smooth"
@@ -54,6 +71,7 @@ export default function ModernPortfolio() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("resize", handleResize)
     }
   }, [])
 
@@ -132,7 +150,7 @@ export default function ModernPortfolio() {
         <div
           className="absolute w-80 h-80 bg-gradient-to-br from-purple-200 to-purple-100 rounded-full blur-3xl opacity-50 transition-all duration-1000 ease-out"
           style={{
-            top: `${window.innerHeight / 2 - scrollY * 0.15}px`,
+            top: `${(windowSize.height || 800) / 2 - scrollY * 0.15}px`,
             left: `${10 - scrollY * 0.03}px`,
           }}
         />
@@ -142,7 +160,7 @@ export default function ModernPortfolio() {
           className="absolute w-72 h-72 bg-gradient-to-br from-emerald-200 to-emerald-100 rounded-full blur-3xl opacity-70 transition-all duration-1000 ease-out"
           style={{
             bottom: `${32 + scrollY * 0.08}px`,
-            right: `${window.innerWidth / 3 + scrollY * 0.02}px`,
+            right: `${(windowSize.width || 1200) / 3 + scrollY * 0.02}px`,
           }}
         />
 
