@@ -38,7 +38,6 @@ export default function ModernPortfolio() {
   useEffect(() => {
     setIsLoaded(true)
 
-    // Set initial window size
     const updateWindowSize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -46,7 +45,6 @@ export default function ModernPortfolio() {
       })
     }
 
-    // Set initial size
     updateWindowSize()
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -65,7 +63,6 @@ export default function ModernPortfolio() {
     window.addEventListener("scroll", handleScroll)
     window.addEventListener("resize", handleResize)
 
-    // Enable smooth scrolling
     document.documentElement.style.scrollBehavior = "smooth"
 
     return () => {
@@ -75,7 +72,7 @@ export default function ModernPortfolio() {
     }
   }, [])
 
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>) => {
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: "smooth" })
       setIsMenuOpen(false)
@@ -135,7 +132,6 @@ export default function ModernPortfolio() {
 
   return (
     <div className="min-h-screen bg-white text-black font-sans">
-      {/* Gradient Blobs/Manchas com animação de scroll - CORES DE DESTAQUE */}
       <div className="fixed inset-0 z-0 overflow-hidden">
         {/* Mancha principal - azul suave */}
         <div
@@ -205,7 +201,7 @@ export default function ModernPortfolio() {
             <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-medium">
               N
             </div>
-            <span className="font-medium text-gray-900">Nicolas Moraes</span>
+            <span className="font-medium text-gray-900 font-pressStart2P">Nicolas Moraes</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -299,7 +295,7 @@ export default function ModernPortfolio() {
 
               <div className="text-center">
                 <div>
-                  <h1 className="mb-6 cool-font">
+                  <h1 className="mb-6 font-pressStart2P">
                     <span className="block text-5xl md:text-8xl font-bold tracking-tight leading-none text-black">
                       NICOLAS
                     </span>
@@ -648,7 +644,7 @@ export default function ModernPortfolio() {
                   <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-medium">
                     N
                   </div>
-                  <span className="font-medium text-gray-900">Nicolas Moraes</span>
+                  <span className="font-medium text-gray-900 font-pressStart2P">Nicolas Moraes</span>
                 </div>
                 <p className="text-sm text-gray-600 font-light mb-4">
                   Fullstack Developer specializing in modern web technologies and immersive 3D experiences.
@@ -690,7 +686,7 @@ export default function ModernPortfolio() {
               </div>
 
               <div className="text-right">
-                <p className="text-sm text-gray-500 font-light">© 2024 Nicolas Moraes de Souza</p>
+                <p className="text-sm text-gray-500 font-light font-pressStart2P">© 2024 Nicolas Moraes de Souza</p>
                 <p className="text-xs text-gray-400 font-light mt-1">Crafted in Blumenau, Brazil</p>
                 <div className="flex justify-end gap-4 mt-4">
                   <a
